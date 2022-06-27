@@ -65,7 +65,7 @@ resource "yandex_compute_instance" "hosts" {
     ignore_changes = [boot_disk[0].initialize_params[0].image_id]
   }
 
-#Одну машину в кластере БД кладем в другую подсеть, для обеспечения HA.
+#Одну машину в кластере БД кладем в другую подсеть, согласно заданию.
   network_interface {
     subnet_id = "${each.value.name == "db02" ? yandex_vpc_subnet.mtsh-subnet-b.id : yandex_vpc_subnet.mtsh-subnet-a.id}"
   }

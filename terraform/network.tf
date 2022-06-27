@@ -5,6 +5,7 @@ resource "yandex_vpc_network" "mtsh-net" {
   name = "mtsh"
 }
 
+# Создаем правило маршрутизации - все на ingress
 resource "yandex_vpc_route_table" "nat-int" {
   network_id = "${yandex_vpc_network.mtsh-net.id}"
 

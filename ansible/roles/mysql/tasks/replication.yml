@@ -19,7 +19,6 @@
   notify:
     - Restart mysql
   
-
 - name: Ensure replication user exists on master.
   mysql_user:
     name: "{{ mysql_replication_user }}"
@@ -35,8 +34,6 @@
 - name: check slave replication status
   mysql_replication:
     mode: getreplica
-    login_user: "{{ db_user }}"
-    login_password: "{{ db_pass }}"
   register: slave
   when:
     - mysql_replication_role == 'slave'
@@ -48,6 +45,7 @@
   delegate_to: "{{ mysql_replication_master }}"
   register: master
   when:
+    - (slave.Is_Replica is defined and not slave.Is_Replica) or (slave.Is_Replica is not defined and slave is failed)
     - mysql_replication_role == 'slave'
     - (mysql_replication_master | length) > 0
 
@@ -60,6 +58,7 @@
     primary_log_file: "{{ master.File }}"
     primary_log_pos: "{{ master.Position }}"
   when:
+    - (slave.Is_Replica is defined and not slave.Is_Replica) or (slave.Is_Replica is not defined and slave is failed)
     - mysql_replication_role == 'slave'
     - mysql_replication_user is defined
     - (mysql_replication_master | length) > 0
@@ -68,5 +67,6 @@
   mysql_replication: 
     mode=startreplica
   when:
+    - (slave.Is_Replica is defined and not slave.Is_Replica) or (slave.Is_Replica is not defined and slave is failed)
     - mysql_replication_role == 'slave'
     - (mysql_replication_master | length) > 0

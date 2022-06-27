@@ -1,4 +1,4 @@
-#Access token
+#Токен доступа к yandex.cloud
 variable "token" {
   type      = string
   sensitive = true
@@ -34,7 +34,6 @@ variable "ingress_ip" {
   default = "10.202.0.100"
 }
 
-
 #Параметры ВМ
 variable "hosts" {
     type = map(map(map(string)))
@@ -58,18 +57,18 @@ variable "hosts" {
           memory = "2"
           core_fraction = "20"
         }
-#        vm4 = {
-#          name = "gitlab-stage.local"
-#          cores = "4"
-#          memory = "4"
-#          core_fraction = "20"
-#        }
-#        vm5 = {
-#          name = "monitoring-stage.local"
-#          cores = "4"
-#          memory = "4"
-#          core_fraction = "20"
-#        }
+        vm4 = {
+          name = "gitlab"
+          cores = "2"
+          memory = "4"
+          core_fraction = "20"
+        }
+        vm5 = {
+          name = "monitoring"
+          cores = "2"
+          memory = "2"
+          core_fraction = "20"
+        }
 
     }
       prod = {

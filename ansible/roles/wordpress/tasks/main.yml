@@ -7,13 +7,8 @@
 
 - name: Replace default site
   template:
-    src=templates/nginx_default.conf
-    dest=/etc/nginx/sites-enabled/default
-
-- name: Add virtual domain
-  template:
     src=templates/nginx.conf
-    dest=/etc/nginx/sites-enabled/{{ virtual_domain }}.conf
+    dest=/etc/nginx/sites-enabled/default
   notify:
     - nginx restart
 
@@ -35,7 +30,6 @@
     group: "www-data"
     mode: '0755'
 
-# WordPress Configuration
 - name: Download and unpack latest WordPress
   unarchive:
     src: https://wordpress.org/latest.tar.gz
@@ -53,12 +47,17 @@
     group: www-data
 
 - name: Set permissions for directories
-  shell: "/usr/bin/find /var/www/{{ virtual_domain }}/ -type d -exec chmod 750 {} \\;"
+  shell: "/usr/bin/find /var/www/{{ virtual_domain }}/ -type d -exec chmod 755 {} \\;"
 
 - name: Set permissions for files
-  shell: "/usr/bin/find /var/www/{{ virtual_domain }}/ -type f -exec chmod 640 {} \\;"
+  shell: "/usr/bin/find /var/www/{{ virtual_domain }}/ -type f -exec chmod 644 {} \\;"
 
 - name: Set up wp-config
   template:
     src: "templates/wp-config.php.j2"
     dest: "/var/www/{{ virtual_domain }}/wp-config.php"
+
+- name: Restart nginx, in all cases
+  ansible.builtin.service:
+    name: nginx
+    state: restarted

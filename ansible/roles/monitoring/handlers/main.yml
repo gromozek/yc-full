@@ -1,0 +1,28 @@
+---
+# handlers file for roles/monitoring
+- name: restart prometheus
+  become: true
+  systemd:
+    daemon_reload: true
+    name: prometheus
+    state: restarted
+
+- name: reload prometheus
+  become: true
+  systemd:
+    name: prometheus
+    state: reloaded
+
+- name: restart alertmanager
+  service:
+    name: alertmanager
+    state: restarted
+
+- name: reload alertmanager
+  service:
+    name: alertmanager
+    state: reloaded
+
+- name: reload systemd and restart alertmanager
+  command: systemctl daemon-reload
+  notify: restart alertmanager

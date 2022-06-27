@@ -29,3 +29,18 @@ wordpress:
       ansible_user: ubuntu
       ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@51.250.82.179"
       virtual_domain: mtsh.site
+
+git:
+  hosts:
+    gitlab:
+      ansible_connection: ssh
+      ansible_user: ubuntu
+      ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@51.250.82.179"
+      virtual_domain: mtsh.site
+
+mon:
+  hosts:
+    monitoring:
+      ansible_connection: ssh
+      ansible_user: ubuntu
+      ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@51.250.82.179"

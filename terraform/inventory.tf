@@ -31,6 +31,21 @@ resource "local_file" "inventory" {
           ansible_user: ubuntu
           ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
           virtual_domain: ${var.fqdn}
+
+    git:
+      hosts:
+        gitlab:
+          ansible_connection: ssh
+          ansible_user: ubuntu
+          ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
+          virtual_domain: ${var.fqdn}
+
+    mon:
+      hosts:
+        monitoring:
+          ansible_connection: ssh
+          ansible_user: ubuntu
+          ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
     DOC
   filename = "../ansible/inventory.yml"
   file_permission = "0644"
