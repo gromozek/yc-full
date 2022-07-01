@@ -1,6 +1,7 @@
+# Ждем поднятия ВМ (время в секундах)
 resource "null_resource" "wait" {
   provisioner "local-exec" {
-    command = "sleep 90"
+    command = "sleep 600"
   }
 
   depends_on = [
@@ -8,6 +9,7 @@ resource "null_resource" "wait" {
   ]
 }
 
+# Запускаем ansible
 resource "null_resource" "ansible" {
   provisioner "local-exec" {
     command = "ANSIBLE_FORCE_COLOR=1 ansible-playbook -i ../ansible/inventory.yml ../ansible/play.yml"
