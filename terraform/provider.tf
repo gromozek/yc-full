@@ -1,4 +1,4 @@
-// Configure the Yandex.Cloud provider
+// Конфигурация провайдера Yandex.Cloud
 terraform {
   required_providers {
     yandex = {
