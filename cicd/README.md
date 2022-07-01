@@ -26,4 +26,4 @@ $ ansible-playbook ../cicd/prepare.yml -i inventory.yml -l app
   
 ![](/screenshots/cicd4.png)
   
-Описание действий, которые делает раннер, в файле `.gitlab-ci.yml`
+Описание действий, которые делает раннер, в комментариях в файле `.gitlab-ci.yml`
