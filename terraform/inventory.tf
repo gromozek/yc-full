@@ -1,3 +1,4 @@
+# Создаем файл inventory.yml для последующего запуска ansible
 resource "local_file" "inventory" {
   content = <<-DOC
     # Ansible inventory containing variable values from Terraform.
