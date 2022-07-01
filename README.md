@@ -36,4 +36,7 @@ $ terraform apply
 ```
 
 Что **можно** поменять:
-1. Пара
+1. Параметры создаваемых ВМ. Они описаны в переменной `hosts` в файле `variables.tf`
+2. Выставить `preemptible = false` в файле `compute.tf`, чтобы ВМ не отключались каждые 24 часа. Сейчас стоит true для экономии денег.
+3. Выставить время ожидания поднятия ВМ в файле `ansible.tf` `command = "sleep <time>"`. Или вообще переименовать этот файл в `.bak` и запускать Ansible часть вручную `ansible-playbook -i ../ansible/inventory.yml ../ansible/play.yml`
+4.   
