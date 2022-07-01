@@ -19,4 +19,21 @@
 2. Домен, делегированный на `ns1.yandexcloud.net` и `ns1.yandexcloud.net` . Чтобы не ждать, можно эти же сервера прописать у себя в DNS на компе. Имя домена - в переменную `fqdn` в файле `variables.tf`
 3. Создать облако. ID облака - в переменную `cloud_id` в файле `variables.tf` 
 4. Создать каталог в облаке. ID каталога - в переменную `folder_id` в файле `variables.tf`
-5. Создать Object Storage (bucket). 
+5. Создать Object Storage (bucket). Добавить имя бакета в файл `backend.conf` `bucket     = <your-bucket-name>`
+6. Создать сервисный аккаунт с ролью `editor`. Сгенерировать статический ключ доступа для этого аккаунта. ID и секрет ключа записать в соответствующие параметры в файл `backend.conf`: `access_key = <your-access-key>` `secret_key = <your-secret-key>`
+7. Получить OAuth токен по инструкции [здесь](https://cloud.yandex.ru/docs/iam/concepts/authorization/oauth-token) 
+8. Запуск происходит в workspace `stage`, его надо создать, команды ниже.
+  
+Запуск:
+```bash
+$ export TF_VAR_token=<ваш OAuth токен>
+$ cd terraform
+$ terraform workspace new stage
+$ terraform workspace select stage 
+$ terraform init -backend-config=backend.conf
+$ terraform plan
+$ terraform apply
+```
+
+Что **можно** поменять:
+1. Пара
