@@ -1,0 +1,33 @@
+stages:
+  - deploy-stage
+
+variables:
+  WORDPRESS_SITE_DIR: /var/www/mtsh.site
+  WORDPRESS_THEME_NAME: mytheme
+  WORDPRESS_PLUGINS: "ewww-image-optimizer google-sitemap-generator wp-sweep"
+
+deploy-stage:
+  stage: deploy-stage
+  script:
+    # prepare destination server - clean destination directory except for /wp-content/uploads
+    - mkdir -p ~/tmp && cp -r ./wp-content/themes/$WORDPRESS_THEME_NAME ~/tmp
+    - cp $WORDPRESS_SITE_DIR/wp-config.php ~
+    - sudo find $WORDPRESS_SITE_DIR -mindepth 1 ! -regex '^$WORDPRESS_SITE_DIR/wp-content/uploads\(/.*\)?' -delete
+    - sudo cp ~/wp-config.php $WORDPRESS_SITE_DIR
+        
+    # install wordpress and plugins
+    - cd $WORDPRESS_SITE_DIR && 
+        sudo wp core download --version=6.0 --skip-content --allow-root &&
+        sudo wp plugin install $WORDPRESS_PLUGINS --allow-root
+    
+    # deploy updated theme code to destination server
+    - sudo mkdir -p $WORDPRESS_SITE_DIR/wp-content/themes/$WORDPRESS_THEME_NAME
+    - sudo cp -r ~/tmp/$WORDPRESS_THEME_NAME $WORDPRESS_SITE_DIR/wp-content/themes/
+
+    # enable deployed theme and plugins
+    - cd $WORDPRESS_SITE_DIR && 
+        sudo wp theme activate $WORDPRESS_THEME_NAME --allow-root &&
+        sudo wp plugin activate $WORDPRESS_PLUGINS --allow-root 
+
+    # ensure Wordpress and plugins have permissions on content/themes/plugin dirs
+    - sudo chown -R www-data $WORDPRESS_SITE_DIR

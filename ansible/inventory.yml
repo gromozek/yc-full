@@ -3,9 +3,10 @@
 ---
 nginx:
   hosts:
-    51.250.82.179:
+    51.250.87.22:
       ansible_connection: ssh
       ansible_user: ubuntu
+      ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
       virtual_domain: mtsh.site
 
 dbservers:
@@ -13,13 +14,13 @@ dbservers:
     db01:
       ansible_connection: ssh
       ansible_user: ubuntu
-      ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@51.250.82.179"
+      ansible_ssh_extra_args: "-o StrictHostKeyChecking=no -J ubuntu@51.250.87.22"
       mysql_replication_role: 'master'
           
     db02:
       ansible_connection: ssh
       ansible_user: ubuntu
-      ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@51.250.82.179"
+      ansible_ssh_extra_args: "-o StrictHostKeyChecking=no -J ubuntu@51.250.87.22"
       mysql_replication_role: 'slave'
 
 wordpress:
@@ -27,7 +28,7 @@ wordpress:
     app:
       ansible_connection: ssh
       ansible_user: ubuntu
-      ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@51.250.82.179"
+      ansible_ssh_extra_args: "-o StrictHostKeyChecking=no -J ubuntu@51.250.87.22"
       virtual_domain: mtsh.site
 
 git:
@@ -35,7 +36,7 @@ git:
     gitlab:
       ansible_connection: ssh
       ansible_user: ubuntu
-      ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@51.250.82.179"
+      ansible_ssh_extra_args: "-o StrictHostKeyChecking=no -J ubuntu@51.250.87.22"
       virtual_domain: mtsh.site
 
 mon:
@@ -43,4 +44,4 @@ mon:
     monitoring:
       ansible_connection: ssh
       ansible_user: ubuntu
-      ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@51.250.82.179"
+      ansible_ssh_extra_args: "-o StrictHostKeyChecking=no -J ubuntu@51.250.87.22"

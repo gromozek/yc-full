@@ -70,16 +70,6 @@
     validate: "{{ alertmanager_bin_path }}/amtool check-config %s"
   notify: reload alertmanager
 
-#- name: Create the Alertmanager template files
-#  copy:
-#    content: "{{ item.value }}"
-#    dest: "{{ alertmanager_templates_path }}/{{ item.key }}.tmpl"
-#    owner: "{{ alertmanager_user }}"
-#    group: "{{ alertmanager_group }}"
-#    mode: 0640
-#  with_dict: "{{ alertmanager_templates }}"
-#  notify: reload alertmanager
-
 - name: Create the Systemd Unit file for the Alertmanager service
   template:
     src: alertmanager.systemd.j2
@@ -87,25 +77,11 @@
     owner: root
     group: root
     mode: 0640
-  notify: reload systemd and restart alertmanager
-  when: ansible_service_mgr == "systemd"
-
-- name: Create the Upstart Unit file for the Alertmanager service
-  template:
-    src: alertmanager.upstart.j2
-    dest: /etc/init/alertmanager.conf
-    owner: root
-    group: root
-    mode: 0640
   notify: restart alertmanager
-  when: ansible_service_mgr == "upstart"
 
-- name: Create the generic start-stop script for the Alertmanager service
-  template:
-    src: alertmanager.service.j2
-    dest: /etc/init.d/alertmanager
-    owner: root
-    group: root
-    mode: 0750
-  notify: restart alertmanager
-  when: ansible_service_mgr not in [ "systemd", "upstart" ]
+- name: service always started
+  systemd:
+    name: alertmanager
+    state: started
+    enabled: yes
+

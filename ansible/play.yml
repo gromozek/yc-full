@@ -1,3 +1,18 @@
+- hosts: nginx
+  become:
+    true
+  become_method:
+    sudo
+  become_user:
+    root
+  remote_user:
+    ubuntu
+  roles:
+   - nginx
+   - nodeexporter
+  vars:
+    nginx_user: www-data
+
 - hosts: dbservers
   become:
     true
@@ -58,8 +73,11 @@
     root
   remote_user:
     ubuntu
-  roles:
-   - nginx
-   - nodeexporter
-  vars:
-    nginx_user: www-data
+  tasks:
+    - name: nginx restart
+      service:
+        name=nginx
+        state=restarted
+    - name: Print message
+      debug:
+        msg: "All done."

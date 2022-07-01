@@ -2,7 +2,6 @@
 - name: Set LetsEncrypt variables
   set_fact:
     letsencrypt_email: info@{{ virtual_domain }}
-    letsencrypt_staging: true
 
 - name: Check if certificate already exists
   stat:
@@ -18,3 +17,9 @@
     -d 'alertmanager.{{ virtual_domain }}'
     {% if letsencrypt_staging %} --staging {% endif %}
   when: not letsencrypt_cert.stat.exists
+
+- name: Add cron job for certbot renewal 
+  cron:
+    name: Certbot automatic renewal
+    job: "certbot renew"
+    month: "*/2"

@@ -8,6 +8,7 @@ resource "local_file" "inventory" {
         ${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}:
           ansible_connection: ssh
           ansible_user: ubuntu
+          ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
           virtual_domain: ${var.fqdn}
 
     dbservers:
@@ -15,13 +16,13 @@ resource "local_file" "inventory" {
         db01:
           ansible_connection: ssh
           ansible_user: ubuntu
-          ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
+          ansible_ssh_extra_args: "-o StrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
           mysql_replication_role: 'master'
           
         db02:
           ansible_connection: ssh
           ansible_user: ubuntu
-          ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
+          ansible_ssh_extra_args: "-o StrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
           mysql_replication_role: 'slave'
 
     wordpress:
@@ -29,7 +30,7 @@ resource "local_file" "inventory" {
         app:
           ansible_connection: ssh
           ansible_user: ubuntu
-          ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
+          ansible_ssh_extra_args: "-o StrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
           virtual_domain: ${var.fqdn}
 
     git:
@@ -37,7 +38,7 @@ resource "local_file" "inventory" {
         gitlab:
           ansible_connection: ssh
           ansible_user: ubuntu
-          ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
+          ansible_ssh_extra_args: "-o StrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
           virtual_domain: ${var.fqdn}
 
     mon:
@@ -45,7 +46,7 @@ resource "local_file" "inventory" {
         monitoring:
           ansible_connection: ssh
           ansible_user: ubuntu
-          ansible_ssh_extra_args: "-oStrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
+          ansible_ssh_extra_args: "-o StrictHostKeyChecking=no -J ubuntu@${yandex_compute_instance.nginx[0].network_interface[0].nat_ip_address}"
     DOC
   filename = "../ansible/inventory.yml"
   file_permission = "0644"

@@ -1,2 +1,2 @@
 ---
-letsencrypt_staging: true
+letsencrypt_staging: false

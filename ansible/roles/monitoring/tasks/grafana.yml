@@ -42,3 +42,21 @@
   shell : "grafana-cli admin reset-admin-password {{ grafana_admin_password }}"
   register: __command_admin
   changed_when: __command_admin.rc !=0
+
+- name: Create/Update datasources file (provisioning)
+  become: true
+  copy:
+    dest: "/etc/grafana/provisioning/datasources/ansible.yml"
+    content: |
+      apiVersion: 1
+      deleteDatasources: []
+      datasources:
+      {{ grafana_datasources | to_nice_yaml }}
+    backup: false
+    owner: root
+    group: grafana
+    mode: 0640
+  notify: restart grafana
+
+- import_tasks: dashboards.yml
+

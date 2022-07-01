@@ -60,7 +60,7 @@ variable "hosts" {
         vm4 = {
           name = "gitlab"
           cores = "2"
-          memory = "4"
+          memory = "8"
           core_fraction = "20"
         }
         vm5 = {
