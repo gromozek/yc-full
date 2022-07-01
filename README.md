@@ -39,4 +39,6 @@ $ terraform apply
 1. Параметры создаваемых ВМ. Они описаны в переменной `hosts` в файле `variables.tf`
 2. Выставить `preemptible = false` в файле `compute.tf`, чтобы ВМ не отключались каждые 24 часа. Сейчас стоит true для экономии денег.
 3. Выставить время ожидания поднятия ВМ в файле `ansible.tf` `command = "sleep <time>"`. Или вообще переименовать этот файл в `.bak` и запускать Ansible часть вручную `ansible-playbook -i ../ansible/inventory.yml ../ansible/play.yml`
-4.   
+4. Изменить тип выдаваемого сертификата в `ansible/roles/nginx/defaults/main.yml`, поставить `letsencrypt_staging: true` для отладочных целей.
+
+Действия, совершаемые скриптами, описаны в комментариях в соответствующих файлах.
