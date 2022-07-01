@@ -36,4 +36,3 @@ override.tf.json
 terraform.rc
 
 api.key
-backend.conf
